@@ -4,19 +4,36 @@ import Nome from './components/Nome';
 import { useState } from 'react';
 
 function App() {
-  // inicialize useState com uma string "Programador"
-  const [aluno, setAluno] = useState("Programador Iniciante");
+  const [aluno, setAluno] = useState({
+    nome: '',
+    email: '',
+    idade: ''
+  });
 
-  //Função para alterar o estado
-  function alterarAluno(props) {
-    setAluno(props);
+  const [user,setUser] = useState({
+    nome: '',
+    email: '',
+    idade: ''
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setUser(aluno);
+    console.log("Dados do aluno", aluno);
   }
   return (
     <div className="App">
-      <h1>Bem Vindo</h1>
-      <Nome aluno={aluno}></Nome><br/>
-      <input type="text" placeholder='Digite seu nome' id="inputNome"></input>
-      <button onClick={() => alterarAluno(document.getElementById("inputNome").value)}>Salvar Nomes</button>
+      <form onSubmit={handleSubmit}>
+        <input type="text" placeholder="Nome" value={aluno.nome} onChange={(e) => setAluno({ ...aluno, nome: e.target.value })} />
+        <input type="text" placeholder="Email" value={aluno.email} onChange={(e) => setAluno({ ...aluno, email: e.target.value })} />
+        <input type="number" placeholder="Idade" value={aluno.idade} onChange={(e) => setAluno({ ...aluno, idade: e.target.value })} />
+        <button type='submit'>Enviar</button>
+      </form >
+      <div>
+        <p>Bem-vindo, {user.nome}</p>
+        <p>Email: {user.email}</p>
+        <p>Idade: {user.idade}</p>
+      </div>
     </div>
   );
 }
