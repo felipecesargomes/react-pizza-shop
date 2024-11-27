@@ -1,16 +1,34 @@
 //Crie um componente básico com h1 Hello World
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const App2 = () => {
     //estados para armarazenar as tarefas
     const [tarefas, setTarefas] = useState([]);
     const [atualizaTarefa, setAtualizaTarefa] = useState('');
 
+    //Carregar tarefas do localStorage quando o @tarefas for alterado
+    useEffect(() => {
+        const tarefas = localStorage.getItem('@tarefas');
+        if(tarefas){
+            setTarefas(JSON.parse(tarefas));
+        }
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        setTarefas([...tarefas, atualizaTarefa]);
-        //setAtualizaTarefa('');
+        if(atualizaTarefa.trim() === ''){
+            alert('Digite uma tarefa');
+            return;
+        }
+        let tarefas = localStorage.getItem('@tarefas');
+        tarefas = tarefas ? JSON.parse(tarefas) : [];
+        const novaLista =[...tarefas, atualizaTarefa];
+        
+        setTarefas(novaLista);
+        //salvar tarefas no localStorage
+        localStorage.setItem('@tarefas', JSON.stringify(novaLista));
+        setAtualizaTarefa('');
     };
 
     return (
